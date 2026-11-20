@@ -1,0 +1,8 @@
+{
+  "name": "monte-seu-caminhao",
+  "private": true,
+  "description": "Página de resolução dos puzzles do puzzle-cube: digite o código e monte peça por peça.",
+  "scripts": {
+    "test": "node --test \"tests/*.test.js\""
+  }
+}

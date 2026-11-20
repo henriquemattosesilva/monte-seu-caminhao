@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monte o seu caminhão</title>
+<meta name="description" content="Digite o código do seu puzzle e veja, peça por peça, como montar a carga do baú.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1d2024" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='1' width='14' height='14' rx='3' fill='%23f28c28'/%3E%3Cpath d='M5 5h3v3H5zM8 8h3v3H8z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<main class="tela">
+
+  <!-- 1. entrada: o código -->
+  <section id="entrada" class="entrada">
+    <h1>Monte o seu caminhão</h1>
+    <p class="sub">Digite o código do seu puzzle e veja, peça por peça, como montar a carga do baú.</p>
+    <form id="formCodigo" autocomplete="off">
+      <label class="rot" for="codigo">Código do puzzle</label>
+      <input id="codigo" class="campo" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="14" enterkeyhint="go" aria-describedby="confirma">
+      <p id="confirma" class="confirma" aria-live="polite"></p>
+      <button id="ver" class="primario" type="submit" disabled>Ver a montagem</button>
+    </form>
+    <div id="previa" class="previa"></div>
+  </section>
+
+  <!-- 2 e 3. a montagem -->
+  <section id="montagem" class="montagem" hidden>
+    <div class="barra">
+      <button id="voltar" class="icone-b" type="button" aria-label="Voltar ao código">‹</button>
+      <span>Código <b id="codigoVisto"></b></span>
+      <button id="trocar" class="link" type="button">Outro código</button>
+    </div>
+    <div id="vista" class="vista"><span class="girar">↻ arraste para girar</span></div>
+    <div class="painel">
+      <div id="pontos" class="pontos" role="group" aria-label="Peças"></div>
+      <div id="passo" class="passo" aria-live="polite"></div>
+      <div class="nav">
+        <button id="anterior" class="seta-b" type="button" aria-label="Peça anterior">‹</button>
+        <button id="proxima" class="primario largo" type="button">Próxima peça ›</button>
+        <button id="denovo" class="secundario largo com-icone" type="button" hidden>
+          <svg class="icone" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.99982C16.9706 2.99982 21 7.02925 21 11.9998C21 16.9704 16.9706 20.9998 12 20.9998C7.02944 20.9998 3 16.9704 3 11.9998C3 9.17255 4.30367 6.64977 6.34267 4.99982" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 4.49982H7V8.49982" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Começar de novo
+        </button>
+      </div>
+      <label class="desliza"><span>Montagem</span><input id="deslizante" type="range" min="0" max="1" step="1" value="0"></label>
+    </div>
+  </section>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="src/gerador/aleatorio.js"></script><script src="src/gerador/grade.js"></script>
+<script src="src/gerador/orientacao.js"></script><script src="src/gerador/montagem.js"></script>
+<script src="src/gerador/particao.js"></script><script src="src/gerador/tipos.js"></script>
+<script src="src/gerador/codigo.js"></script><script src="src/resolver.js"></script>
+<script src="src/vista.js"></script><script src="src/app.js"></script>
+</body>
+</html>
