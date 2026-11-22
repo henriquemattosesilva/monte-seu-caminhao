@@ -6,6 +6,8 @@
   const R = PC.resolver;
   const NOME_DO_MODO = { caminhao: 'Caminhão', cubo: 'Cubo' };
   let vista = null, previa = null, solucao = null, codigo = '';
+  // as soluções do código aberto: a de sempre primeiro; as outras chegam aos poucos (solucoes.js)
+  let lista = [], atual = 0, buscando = false, completo = true, pararBusca = null;
   PC.app = { vista: () => vista };   // para a conferência (o centro do giro)
 
   const limpo = (s) => String(s || '').toUpperCase().replace(/[\s\-·.]/g, '');
@@ -56,20 +58,50 @@
     let s;
     try { s = R.resolver(c); } catch (e) { $('confirma').className = 'confirma erro'; $('confirma').textContent = e.message; return false; }
     codigo = c;
-    solucao = s;
     $('codigoVisto').textContent = c;
     $('entrada').hidden = true;
     $('montagem').hidden = false;
     if (previa) previa.pausar(true);
     if (!vista) vista = PC.vista.criarVista($('vista'));
-    vista.mostrar(s);
-    desenharPontos();
-    irPara(0, false);
+    lista = [s];
+    mostrarSolucao(0);
+    procurarOutras(s);
     if (location.hash !== '#' + c) history.replaceState(null, '', '#' + c);
     return true;
   }
 
+  function mostrarSolucao(i) {
+    atual = i;
+    solucao = lista[i];
+    vista.mostrar(solucao);
+    desenharPontos();
+    irPara(0, false);
+    botaoOutra();
+  }
+
+  function procurarOutras(s) {
+    if (pararBusca) pararBusca();
+    buscando = true;
+    completo = true;
+    pararBusca = PC.solucoes.emSegundoPlano(s, {
+      aoAchar: (x) => { lista.push(x); botaoOutra(); },
+      aoTerminar: (c) => { buscando = false; completo = c; pararBusca = null; botaoOutra(); },
+    });
+    botaoOutra();
+  }
+
+  // "Outra solução (1 de N)": a que está na tela e quantas há (contando ainda: "…"; no limite: "+")
+  function botaoOutra() {
+    const b = $('outra'), n = lista.length;
+    b.hidden = n < 2;
+    const total = n + (buscando ? '…' : completo ? '' : '+');
+    b.innerHTML = `Outra solução <span class="n">(${atual + 1} de ${total})</span>`;
+    b.setAttribute('aria-label', `Outra solução: esta é a ${atual + 1} de ${total.replace('…', ', ainda contando').replace('+', ' ou mais')}`);
+  }
+  $('outra').addEventListener('click', () => mostrarSolucao((atual + 1) % lista.length));
+
   function voltar() {
+    if (pararBusca) { pararBusca(); pararBusca = null; buscando = false; }
     $('montagem').hidden = true;
     $('entrada').hidden = false;
     $('codigo').value = codigo;

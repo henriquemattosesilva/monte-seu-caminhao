@@ -35,7 +35,7 @@
     return { modo: d.modo, dims: d.dims, pecas };
   }
 
-  const api = { ler, resolver, VERSAO_DO_GERADOR };
+  const api = { ler, resolver, VERSAO_DO_GERADOR, DIRECOES };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   (globalThis.PC = globalThis.PC || {}).resolver = api;
 })();
